@@ -1,0 +1,2189 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "SKR INVENTORY MANAGEMENT - API Documentation",
+        "version": "1.0.0",
+        "title": "SKR INVENTORY MANAGEMENT",
+        "termsOfService": "https://mishajib.me",
+        "contact": {
+            "email": "mishajib222@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "skr-inventory.lcl",
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Everything about authentication"
+        },
+        {
+            "name": "Users",
+            "description": "Everything about users"
+        },
+        {
+            "name": "Brands",
+            "description": "Everything about brands"
+        },
+        {
+            "name": "Categories",
+            "description": "Everything about categories"
+        },
+        {
+            "name": "Units",
+            "description": "Everything about units"
+        },
+        {
+            "name": "Suppliers",
+            "description": "Everything about suppliers"
+        },
+        {
+            "name": "Products",
+            "description": "Everything about products"
+        },
+        {
+            "name": "Purchases",
+            "description": "Everything about purchases"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Register user",
+                "operationId": "userRegistration",
+                "consumes": [
+                    "multipart/form-data",
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "formData",
+                        "description": "Enter confirm password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Login to user account",
+                "operationId": "userLogin",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string",
+                        "format": "email",
+                        "default": "admin@app.com"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string",
+                        "format": "password",
+                        "default": "password"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/current-user": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Get current authenticate user",
+                "operationId": "getCurrentAuthUser",
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "User logout",
+                "operationId": "userLogout",
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Fetch all users",
+                "description": "",
+                "operationId": "getAllUsers",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Add User",
+                "operationId": "addUser",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "formData",
+                        "description": "Enter confirm password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_admin",
+                        "in": "formData",
+                        "description": "Select true or false",
+                        "required": true,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Find user by id",
+                "description": "Returns a single user",
+                "operationId": "getUserById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "Enter id of the user for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Edit User",
+                "operationId": "EditUser",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "Enter id of the user for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Enter password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "formData",
+                        "description": "Enter confirm password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "is_admin",
+                        "in": "formData",
+                        "description": "Select true or false",
+                        "required": true,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Delete User",
+                "operationId": "deleteUser",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "Enter id of the user for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Fetch all brands",
+                "description": "",
+                "operationId": "getAllBrands",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Brands"
+                ],
+                "description": "Add Brand",
+                "operationId": "addBrand",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/brands/{brand}": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Find brand by id",
+                "description": "Returns a single brand",
+                "operationId": "getBrandById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "Enter id of the brand for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Brands"
+                ],
+                "description": "Edit Brand",
+                "operationId": "EditBrand",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "Enter id of the brand for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "description": "Delete Brand",
+                "operationId": "deleteBrand",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "Enter id of the brand for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Fetch all categories",
+                "description": "",
+                "operationId": "getAllCategories",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "description": "Add Category",
+                "operationId": "addCategory",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Brand created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{category}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Find category by id",
+                "description": "Returns a single category",
+                "operationId": "getCategoryById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Enter id of the category for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "description": "Edit Category",
+                "operationId": "editCategory",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Enter id of the category for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "description": "Delete Category",
+                "operationId": "deleteCategory",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Enter id of the category for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/units": {
+            "get": {
+                "tags": [
+                    "Units"
+                ],
+                "summary": "Fetch all units",
+                "description": "",
+                "operationId": "getAllUnits",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Units"
+                ],
+                "description": "Add Unit",
+                "operationId": "addUnit",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "short_name",
+                        "in": "formData",
+                        "description": "Enter short name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unit created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/units/{unit}": {
+            "get": {
+                "tags": [
+                    "Units"
+                ],
+                "summary": "Find unit by id",
+                "description": "Returns a single unit",
+                "operationId": "getUnitById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "unit",
+                        "in": "path",
+                        "description": "Enter id of the unit for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Units"
+                ],
+                "description": "Edit Unit",
+                "operationId": "editUnit",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "unit",
+                        "in": "path",
+                        "description": "Enter id of the unit for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "short_name",
+                        "in": "formData",
+                        "description": "Enter short_name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unit updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Units"
+                ],
+                "description": "Delete Unit",
+                "operationId": "deleteUnit",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "unit",
+                        "in": "path",
+                        "description": "Enter id of the unit for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unit deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers": {
+            "get": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Fetch all suppliers",
+                "description": "",
+                "operationId": "getAllSuppliers",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "description": "Add Supplier",
+                "operationId": "addSupplier",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone_number",
+                        "in": "formData",
+                        "description": "Enter phone number",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "Enter address",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Supplier created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/{supplier}": {
+            "get": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Find supplier by id",
+                "description": "Returns a single supplier",
+                "operationId": "getSupplierById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "supplier",
+                        "in": "path",
+                        "description": "Enter id of the supplier for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "description": "Edit Supplier",
+                "operationId": "editSupplier",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "supplier",
+                        "in": "path",
+                        "description": "Enter id of the supplier for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Enter email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phone_number",
+                        "in": "formData",
+                        "description": "Enter phone number",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": "Enter address",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Supplier updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "description": "Delete Supplier",
+                "operationId": "deleteSupplier",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "supplier",
+                        "in": "path",
+                        "description": "Enter id of the supplier for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Supplier deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Fetch all products",
+                "description": "",
+                "operationId": "getAllProducts",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Add Product",
+                "operationId": "addProduct",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "description": "Enter product code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "cost",
+                        "in": "formData",
+                        "description": "Enter purchase cost",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": "Enter price",
+                        "required": true,
+                        "type": "number",
+                        "minimum": 1
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "description": "Enter image",
+                        "required": false,
+                        "type": "file"
+                    },
+                    {
+                        "name": "note",
+                        "in": "formData",
+                        "description": "Enter note",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "brand_id",
+                        "in": "formData",
+                        "description": "Enter brand id",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "formData",
+                        "description": "Enter category id",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "unit_id",
+                        "in": "formData",
+                        "description": "Enter unit id",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "formData",
+                        "description": "Enter quantity for add initial stock",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{product}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Find product by id",
+                "description": "Returns a single product",
+                "operationId": "getProductById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Enter id of the product for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Edit Product",
+                "operationId": "editProduct",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Enter id of the product for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "_method",
+                        "in": "formData",
+                        "description": "Enter method name",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "PUT",
+                            "PATCH"
+                        ],
+                        "default": "PUT"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Enter name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "code",
+                        "in": "formData",
+                        "description": "Enter product code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "cost",
+                        "in": "formData",
+                        "description": "Enter purchase cost",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": "Enter price",
+                        "required": true,
+                        "type": "number",
+                        "minimum": 1
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "description": "Enter image",
+                        "required": false,
+                        "type": "file"
+                    },
+                    {
+                        "name": "note",
+                        "in": "formData",
+                        "description": "Enter note",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "brand_id",
+                        "in": "formData",
+                        "description": "Enter brand id",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "formData",
+                        "description": "Enter category id",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "unit_id",
+                        "in": "formData",
+                        "description": "Enter unit id",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "description": "Delete Product",
+                "operationId": "deleteProduct",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Enter id of the product for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchases": {
+            "get": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Fetch all purchases",
+                "description": "",
+                "operationId": "getAllPurchases",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Purchases"
+                ],
+                "description": "Add Purchase",
+                "operationId": "addPurchase",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "formData",
+                        "in": "body",
+                        "description": "Enter all necessary fields for create purchase",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Purchase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Purchase created successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchases/{purchase}": {
+            "get": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Find purchase by id",
+                "description": "Returns a single purchase",
+                "operationId": "getPurchaseById",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "purchase",
+                        "in": "path",
+                        "description": "Enter id of the purchase for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Purchases"
+                ],
+                "description": "Edit Purchase",
+                "operationId": "editPurchase",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "purchase",
+                        "in": "path",
+                        "description": "Enter id of the purchase for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "formData",
+                        "in": "body",
+                        "description": "Enter all necessary fields for update purchase",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Purchase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Purchase updated successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Purchases"
+                ],
+                "description": "Delete Purchase",
+                "operationId": "deletePurchase",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "purchase",
+                        "in": "path",
+                        "description": "Enter id of the purchase for url parameter",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Purchase deleted successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allow!",
+                        "schema": {
+                            "$ref": "#/definitions/MethodNotAllow"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocess Request / When Error occured!",
+                        "schema": {
+                            "$ref": "#/definitions/UnProcessRequest"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer token"
+        }
+    },
+    "definitions": {
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "default": []
+                }
+            }
+        },
+        "MethodNotAllow": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "UnProcessRequest": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object"
+                }
+            }
+        },
+        "UnauthorizedError": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object"
+                }
+            }
+        },
+        "Purchase": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "format": "YYYY-MM-DD HH:mm:ss",
+                    "default": "2023-05-07 11:00:00"
+                },
+                "invoice_no": {
+                    "type": "string",
+                    "default": "1234564564587",
+                    "description": "Invoice Number"
+                },
+                "supplier_id": {
+                    "type": "number",
+                    "default": 1
+                },
+                "note": {
+                    "type": "string",
+                    "default": null
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "product_id": {
+                                "type": "number",
+                                "description": "Product ID",
+                                "default": 1
+                            },
+                            "qty": {
+                                "type": "number",
+                                "description": "Quantity",
+                                "default": 5
+                            },
+                            "price": {
+                                "type": "number",
+                                "description": "Price",
+                                "default": 50
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
+}
